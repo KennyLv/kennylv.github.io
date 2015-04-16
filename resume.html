@@ -1,0 +1,399 @@
+﻿<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<meta name="author" content="Sumit Paul">
+		<meta name="title" content="Sumit Paul">
+		<meta name="viewport" content="width=device-width">
+		<meta name="description" content="Kenny is a Software Engineer based in Nanjing with experience at Telematics.">
+		<meta name="keywords" content="motion graphics,vimeo,music video,projection mapping,gif">
+
+		<title>Kenny's Resume</title>
+		<link rel="shortcut icon" href="favicon.ico">
+		<link rel="stylesheet" href="./assets/css/style.css">
+		<link rel="stylesheet" href="./assets/css/resume.css">
+
+		<script type="text/javascript" src="./assets/js/3rd-jQuery/jquery-1.11.1.min.js"></script>
+		<script type="text/javascript">
+				/**
+				 * Provides requestAnimationFrame in a cross browser way.
+				 * http://paulirish.com/2011/requestanimationframe-for-smart-animating/
+				 */
+				if ( !window.requestAnimationFrame ) {
+					window.requestAnimationFrame = ( function() {
+						return window.webkitRequestAnimationFrame ||
+						window.mozRequestAnimationFrame || // comment out if FF4 is slow (it caps framerate at ~30fps: https://bugzilla.mozilla.org/show_bug.cgi?id=630127)
+						window.oRequestAnimationFrame ||
+						window.msRequestAnimationFrame ||
+						function( /* function FrameRequestCallback */ callback, /* DOMElement Element */ element ) {
+							window.setTimeout( callback, 1000 );
+						};
+					} )();
+				}
+		</script>
+		<script type="text/javascript" src="./assets/js/3rd-jQueryPlugin/jquery.yugop.txeff.js"></script>
+		
+		<script type="text/javascript" src="./assets/js/3rd-jsPdf/jspdf.js"></script>
+		<script type="text/javascript" src="./assets/js/3rd-jsPdf/jspdf.plugin.from_html.js"></script>
+		<script type="text/javascript" src="./assets/js/3rd-jsPdf/jspdf.plugin.standard_fonts_metrics.js"></script>
+		<script type="text/javascript" src="./assets/js/3rd-jsPdf/jspdf.plugin.split_text_to_size.js"></script>
+		<script type="text/javascript" src="./assets/js/3rd-jsPdf/jspdf.plugin.cell.js"></script>
+		<script type="text/javascript" src="./assets/js/3rd-jsPdf/jspdf.plugin.addimage.js"></script>
+		<script type="text/javascript" src="./assets/js/3rd-jsPdf/jspdf.plugin.png_support.js"></script>
+		<script type="text/javascript" src="./assets/js/3rd-jsPdf/png_support/png.js"></script>
+		<script type="text/javascript" src="./assets/js/3rd-jsPdf/png_support/zlib.js"></script>
+		<script type="text/javascript" src="./assets/js/3rd-FileSaverJs/FileSaver.js"></script>
+		
+		<script type="text/javascript" src="./assets/js/3rd-jsMVC/agility.min.js"></script>
+		
+		<script type="text/javascript" src="./assets/js/common.js"></script>
+		
+	<script type="text/javascript">
+		$(document).ready(function() {
+				/*
+				var base_url = "http://10.20.71.62:8056/KennyStudio/server/";
+				$.ajax({
+					url: base_url + "profile/education",
+					type: "GET",
+					async: false,
+					data: {username:$("#username").val(), content:$("#content").val()},
+					dataType: "json",
+					error:function(e){
+							console.log("ERROR");
+							console.log(e.responseText);
+					},
+					success: function(data){
+							console.log("SUCCEED");
+							console.log(data.Message.content);
+					}
+				});
+				*/
+		});
+	</script>
+		
+		
+		
+		<script type="text/javascript" >
+			$(document).ready(function() {
+				var baseCommon = new BaseTool();
+				var basePara = {
+					url: "profile/educatiowwwn",
+					type: "GET",
+					async: false,
+					data: null,
+					dataType: "json",
+					error:function(e){console.log(e.responseText)}
+				}
+				
+				var myQuotes= {
+				"EN":[
+					"A good beginning is half done.",
+					"A bird in the hand is worth than two in the bush.",
+					"You never know till you have tried.",
+					"Thoughts are free from toll.",
+					"The car will find its way round the hill when it gets there.",
+					"Some thing is learned every time a book is opened.",
+					"Rome was not built in a day.",
+					"Man proposes, God disposes.",
+					"Faith can move mountains."
+				],"CN":[
+					"十五向學,三十而立,四十而不惑,五十而知天命,六十而耳順,七十而從心欲，不踰矩。",
+					"良好的开端是成功的一半。",
+					"一鸟在手胜过双鸟在林。",
+					"事非经过不知难。",
+					"思想不用交税。",
+					"车到山前必有路。",
+					"开卷有益。",
+					"不积小流，无以成江海。",
+					"谋事在人，成事在天。",
+					"精诚所至，金石为开。"
+				]};
+				var currPos = 0, currLan = "CN";
+				function playNextString(){
+					$("#quotes").yugopeffect(myQuotes[currLan][currPos], Math.floor(myQuotes[currLan][currPos].length*8));
+					currPos++;
+					if(currPos==myQuotes[currLan].length){
+						currPos = 0;
+					}
+					setTimeout(playNextString, 3060);
+				}
+				playNextString();
+				
+
+				var employmentInfo_view = $$({}, 
+						'<div class="employment_period">'
+					+ '<img class="pointer" src="./assets/images/pointer.png"/>'
+					+ '<div>'
+					+ '<div class="timer">'
+					+ '<p data-bind="yearFrom"></p>'
+					+ '</div>'
+					+ '<div class="title">'
+					+ '<a data-bind="companyName"> </a><span data-bind="jobTitle"></span>'
+					+ '</div>'
+					+ '<div class="des"><span data-bind="description"></span>'
+					+ '</div>'
+					+ '</div>'
+					+ '</div>'
+				);
+				var educationInfo_view =  $$({}, 
+					'<div class="education_period">'
+					+'<img class="pointer" src="./assets/images/pointer.png"/>'
+					+'<div>'
+					+'<div class="timer" data-bind="yearFrom"></div>'
+					+'<div class="des">'
+					+'<p class="major" data-bind="major">Marketing & Advertising - B.A.</p>'
+					+'<p class="school" data-bind="school">School of Communications</p>'
+					+'<p class="university" data-bind="university">University of Central Florida</p>'
+					+'</div>'
+					+'<div style="clear:both;"> </div>'
+					+'</div>'
+					+'</div>'
+				);
+				var getEmploymentInfoSucceed = function (data){
+						var employmentInfo_model= data.content;
+						for(var index=0;index<employmentInfo_model.length;index++){
+							var employmentInfo_html = $$(employmentInfo_view, employmentInfo_model[index]);
+							$("#sections_employment").append(employmentInfo_html.view.$root);
+						}
+				}
+				var employmentInfoPara = $.extend(true, basePara, {
+					url: "profile/employ",
+					success:getEmploymentInfoSucceed
+				});
+				baseCommon.ajax(employmentInfoPara);
+				
+				baseCommon.ajax($.extend(true, basePara, {
+					url: "profile/education",
+					success:function(data){
+						var educationInfo_model = data.content;
+						for(var index=0;index<educationInfo_model.length;index++){
+							var educationInfo_html = $$(educationInfo_view, educationInfo_model[index]);
+							$("#sections_eduction").append(educationInfo_html.view.$root);
+						}
+					}
+				}));
+				
+				var professionalSkills_model=[
+					{"skills": "Digital Marketing",     "proficiency":"6"},
+					{"skills": "Traditional Marketing", "proficiency":"3"},
+					{"skills": "Branding & Messaging",  "proficiency":"7"},
+					{"skills": "Research & Analytics",  "proficiency":"9"},
+					{"skills": "Written & Verbal Com",  "proficiency":"8"},
+					{"skills": "Technology",            "proficiency":"6"},
+					{"skills": "Photoshop & Design",    "proficiency":"7"},
+					{"skills": "Web Design/SEO",        "proficiency":"6"},
+					{"skills": "Presentation Skills",   "proficiency":"8"},
+					{"skills": "Project Management",    "proficiency":"9"},
+					{"skills": "Social Media",          "proficiency":"7"},
+					{"skills": "Microsoft Office",      "proficiency":"9"}
+				];
+				for(var index=0;index<professionalSkills_model.length;index++){
+						var professionalSkills_html = $$({
+						  model: professionalSkills_model[index],
+						  view: {
+								format: '<tr><th data-bind="skills"></th><td colspan="3"><div class="skills_star"></div></td></tr>'
+						  },
+						  controller: {
+									'create': function(){
+									  var self = this;
+									  self.view.$('.skills_star').css('width',parseInt(self.model._initData.proficiency) *20 + "px");
+									}
+						  }
+						});
+					$("#skills_score").append(professionalSkills_html.view.$root);
+				}
+				
+				var highlights_model = [
+					"Experience creating sales and marketing collateral; white papers, data sheets, case studies, sales presentations, power points, brochures, trade-show materials, e-mail templates, webinars, and more.",
+					"Experience developing and executing wide range of digital strategies; web design, social media, e-mail, SEO, mobile, video, and more.",
+					"Developed and led numerous webinars and trade shows to create market demand and spur lead gen.",
+					"Perfect."
+				];
+				var item_view = $$({}, '<li data-bind="item"></li>');
+				for(var index=0; index<highlights_model.length;index++){
+					var newItem = $$(item_view, {item : highlights_model[index]});
+					$("#sections_highlights ul").append(newItem.view.$root);
+				}
+				
+				
+				$("#download_resume").click(function(){
+					alert();
+					var pdfdoc = new jsPDF();
+					// All units are in the set measurement for the document
+					// This can be changed to "pt" (points), "mm" (Default), "cm", "in"
+					pdfdoc.fromHTML($('#resume').get(0), 15, 15, {
+						'width': 1024
+					});
+					var progress = 0;
+					var interval = setInterval( function() {
+						progress = Math.min( progress + Math.random() * 0.1, 1 );
+						$("#download_progressbar").css("width", progress*100+"%");
+						if( progress === 1 ) {
+							pdfdoc.save("Kennys_Resume.pdf");
+							clearInterval( interval );
+						}
+					}, 2000 );
+				});
+				
+			});
+		</script>
+	</head>
+	<body>
+		<div id="container">
+			<div id="header-wrap" class="wrapper" style="display:block">
+				<header id="header" class="inner">
+					<a id="main-logo" href="index.html">
+						<img src="./assets/images/LOGO2_1300_510.png" alt="Kenny's Universe - ">
+					</a>
+					<div id="quotes">十五向學,三十而立,四十而不惑,五十而知天命,六十而耳順,七十而從心欲，不踰矩.</div>
+				</header>
+			</div>
+			
+			<section id="resume">
+				<div id="name_area">
+					<div class="name_area_left">
+						<p class="name_card">Kenny   Lv</p>
+						<p class="name_des">Software Engineer in Nanjing with experience at Telematics.</p>
+					</div>
+					<div class="name_area_right">
+						<table>
+							<tbody>
+								<th><td></td><td>GET IN TOUCH WITH ME</td></th>
+								<tr><td><img src="./assets/images/icons1.png"/></td><td><p>Website</p></td></tr>
+								<tr><td><img src="./assets/images/icons2.png"/></td><td><p>Email</p></td></tr>
+								<tr><td><img src="./assets/images/icons3.png"/></td><td><p>Mobile</p></td></tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+				<div id="skill_area">
+					<div class="skill_area_left">
+					
+						<div class="timered_sections">
+							<div class="sections_title"><p>EMPLOYMENT</p></div>
+							<div id="sections_employment">
+							
+								<!--
+								<div class="employment_period">
+									<img class="pointer" src="./assets/images/pointer.png"/>
+									<div>
+										<div class="timer">
+											<p>8888.8~9999.9</p>
+										</div>
+										<div class="title">
+											<a>Infoition </a><span >Product Marketing Manager</span>
+										</div>
+										<div class="des"><span>
+Developed and led the product launch of a new federal social media service that resulted in a 7% increase in revenue four months after launch. I was directly responsible for the go-to-market planning, strategy and execution which required constant internal presentations to c-suite leadership. Planning and development included market research, competitor analysis, pricing strategies, messaging, product positioning and more. Founded on months of market research and  intelligence, I developed the marketing collateral necessary to bring the product to market; brochures, sales presentations, channel partner material, e-mail campaigns and more.</span>
+										</div>
+									</div>
+								</div>
+															
+								<div class="employment_period">
+									<img class="pointer" src="./assets/images/pointer.png"/>
+									<div>
+										<div class="timer">
+											<p>8888.8~9999.9</p>
+										</div>
+										<div class="title">
+											<a>Infoition </a><span >Product Marketing Manager</span>
+										</div>
+										<div class="des"><span>
+Developed and led the product launch of a new federal social media service that resulted in a 7% increase in revenue four months after launch. I was directly responsible for the go-to-market planning, strategy and execution which required constant internal presentations to c-suite leadership. Planning and development included market research, competitor analysis, pricing strategies, messaging, product positioning and more. Founded on months of market research and  intelligence, I developed the marketing collateral necessary to bring the product to market; brochures, sales presentations, channel partner material, e-mail campaigns and more.</span>
+										</div>
+									</div>
+								</div>
+								-->
+								
+								
+							</div>
+						</div>
+						
+						<div class="timered_sections">
+							<div class="sections_title"><p>EDUCATION</p></div>
+							<div id="sections_eduction">
+							
+							<!--
+								<div class="education_period">
+										<img class="pointer" src="./assets/images/pointer.png"/>
+										<div>
+											<div class="timer">2004 - 2008 </div>
+											<div class="des">
+												<p class="major">Marketing & Advertising - B.A.</p>
+												<p class="school">School of Communications</p>
+												<p class="university">University of Central Florida</p>
+											</div>
+											<div style="clear:both;"> </div>
+										</div>
+								</div>
+							
+							
+								<div class="education_period">
+										<img class="pointer" src="./assets/images/pointer.png"/>
+										<div>
+											<div class="timer">2004 - 2008 </div>
+											<div class="des">
+												<p class="major">Marketing & Advertising - B.A.</p>
+												<p class="school">School of Communications</p>
+												<p class="university">University of Central Florida</p>
+											</div>
+											<div style="clear:both;"> </div>
+										</div>
+								</div>-->
+								
+							</div>
+						</div>
+					</div>
+					<div class="skill_area_right">
+					
+						<div class="plus_sections">
+							<div class="sections_title"><p>PROFESSIONAL SKILLS</p></div>
+							<div id="sections_skills">
+							
+								<table id="skills_table">
+									<thead><th></th><th> Average</th><th> Good</th><th> Skilled </th></thead>
+									<tbody id="skills_score">
+										<!--<tr><th>Digital Marketing</th>         <td colspan="3">    <div class="skills_star" style="width:120px;"></div>    </td></tr>
+										<tr><th>Traditional Marketing</th> <td colspan="3">     <div class="skills_star" style="width:140px;"></div>     </td></tr>
+										<tr><th>Research & Analytics</th>  <td colspan="3">     <div class="skills_star" style="width:160px;"></div>     </td></tr>
+										<tr><th>Project Management</th>  <td colspan="3">     <div class="skills_star" style="width:180px;"></div>     </td></tr>
+										<tr><th>Microsoft Office</th>          <td colspan="3">      <div class="skills_star" style="width:120px;"></div>     </td></tr>-->
+									</tbody>
+								</table>
+								
+							</div>
+						</div>
+						
+						<div class="plus_sections">
+							<div class="sections_title"><p>PROFESSIONAL HIGHLIGHTS</p></div>
+							<div id="sections_highlights">
+							
+								<ul>
+									<!--
+									<li>Experience developing and executing wide range of digital strategies; web design, social media, e-mail, SEO, mobile, video, and more.</li>
+									<li>Worked closely with channel partners and trade organizations to develop channel partner strategies.</li>
+									<li>Developed and led numerous webinars and trade shows to create market demand and spur lead gen.</li>
+									<li>Proven ability to collaborate across departments to successfully bring products to market.</li>
+									<li>Agency career experience has proven I can work in complex, fast paced environments without sacrificing ability to multi-task and pay attention to detail.</li>
+									<li>Proven PM skills; from creating project plans to managing resources I’ve consistently met deadlines and business objectives on or under budget.</li>
+									<li>Passion for keeping up with emerging technology and the latest traditional/digital marketing trends."</li>
+									-->
+								</ul>
+							</div>
+						</div>
+						
+				
+					</div>
+					<div style="clear:both;"> </div>
+				</div>
+			</section>
+
+			<div id="footer">
+				Copyright © 2011 Kenny Lv
+				<button  id="download_resume" >Download	<span id="download_progressbar"></span>	</button>
+			</div>
+
+		</div>
+	</body>
+</html>
